@@ -7,6 +7,18 @@ Created on Tue Mar 17 10:37:34 2020
 """
 
 #tools to use : iter, partial
+import collections
+import doctest
+from collections import namedtuple
+import urllib
+import threading
+
+#help :
+#code : https://github.com/JeffPaine/beautiful_idiomatic_python
+#slides : https://speakerdeck.com/pyconslides/transforming-code-into-beautiful-idiomatic-python-by-raymond-hettinger-1?slide=33
+#video : https://www.youtube.com/watch?v=anrOzOapJ2E
+
+# ------------ Transforming Code into Beautiful, Idiomatic Python ------------ 
 
 #Looping integers
 print("Square : ")
@@ -92,7 +104,7 @@ def compare_length(c1, c2):
         return 1
     return 0
 
-print(sorted(colors, cmp=compare_length))
+#print(sorted(colors, cmp=compare_length))
 
 #sort by the length : better and faster
 print(sorted(colors, key=len))
@@ -186,13 +198,14 @@ print("\nCounting to make a new dictionnary :\n", d, sep='')
 d = {}
 for color in colors:
     d[color] = d.get(color, 0) + 1#doesn't fail
-print("\nOther version to count :\n", d, sep='')
+print("\nSecond version to count :\n", d, sep='')
 
 #More modern but doesn't work
-#d = collections.defaultdict(int)
-#for color in colors:
-#    d[color] += 1
-    
+d = collections.defaultdict(int)
+for color in colors:
+    d[color] += 1
+print("\nThird version to count :\n", d, sep='')   
+
 #Making groups
 names = ['raymond', 'rachel', 'matthew', 'roger',
          'betty', 'melissa', 'judith', 'charlie']
@@ -244,3 +257,188 @@ while d:
  
 #faster
 #d = ChainMap(command_line_args, os.environ, defaults)
+ 
+#---------------------------- Improving clarity ----------------------------
+#Clarify function calls with keyword arguments   
+#twitter_search('@obama', False, 20, True)
+#twitter_search('@obama', retweets=False, numtweets=20, popular=True)
+    
+#Clarify multiple return values with named tuples
+doctest.testmod()
+# (0, 4)
+
+doctest.testmod()
+# TestResults(failed=0, attempted=4)
+
+#name the tuple
+TestResults = namedtuple('TestResults', ['failed', 'attempted'])
+
+#unpacking sequences
+p = 'Raymond', 'Hettinger', 0x30, 'python@example.com'
+
+# A common approach / habit from other languages
+fname = p[0]
+lname = p[1]
+age = p[2]
+email = p[3]
+
+#better : more readable and faster, easy change
+fname, lname, age, email = p
+
+
+#Updating multiple state variables
+def fibonacci(n):
+    x = 0
+    y = 1
+    for i in range(n):
+        print(x)
+        t = y
+        y = x + y
+        x = t
+
+#better
+def fibonacci2(n):
+    x, y = 0, 1
+    for i in range(n):
+        print(x)
+        x, y = y, x + y #simultaneous update
+
+print("\nFibonacci")
+fibonacci2(6)
+
+#Simultaneous state updates and temporary variables
+#tmp_x = x + dx * t
+#tmp_y = y + dy * t
+#The "influence" function here is just an example function
+#tmp_dx = influence(m, x, y, dx, dy, partial='x')
+#tmp_dy = influence(m, x, y, dx, dy, partial='y')
+#x = tmp_x
+#y = tmp_y
+#dx = tmp_dx
+#dy = tmp_dy
+
+#better
+#x, y, dx, dy = (x + dx * t,
+#                y + dy * t,
+#                influence(m, x, y, dx, dy, partial='x'),
+#                influence(m, x, y, dx, dy, partial='y'))
+
+#---------------------------- Concatenating strings ----------------------------
+
+
+names = ['raymond', 'rachel', 'matthew', 'roger',
+         'betty', 'melissa', 'judith', 'charlie']
+
+s = names[0]
+for name in names[1:]:
+    s += ', ' + name
+print("\nNames :",s)
+
+print("Names :", ', '.join(names))
+
+#---------------------------- Updating sequences ----------------------------
+
+names = ['raymond', 'rachel', 'matthew', 'roger',
+         'betty', 'melissa', 'judith', 'charlie']
+
+del names[0]
+names.pop(0)
+names.insert(0, 'mark')
+print("\nNames :",names)
+
+#better
+names = collections.deque(['raymond', 'rachel', 'matthew', 'roger',
+               'betty', 'melissa', 'judith', 'charlie'])
+# More efficient with collections.deque
+del names[0]
+names.popleft()
+names.appendleft('mark')
+print("Names :",names)
+
+
+
+#------------------------- Decorators and Context Managers -------------------------
+#Using decorators to factor-out administrative logic
+def web_lookup(url, saved={}):
+    if url in saved:
+        return saved[url]
+    page = urllib.urlopen(url).read()
+    saved[url] = page
+    return page
+
+#Better
+#@cache
+#def web_lookup2(url):
+#    return urllib.urlopen(url).read()
+    
+#caching decorator
+def cache(func):
+    saved = {}
+    @wraps(func)
+    def newfunc(*args):
+        if args in saved:
+            return newfunc(*args)
+        result = func(*args)
+        saved[args] = result
+        return result
+    return newfunc
+
+#------------------------- Factor-out temporary contexts -------------------------
+
+#Saving the old, restoring the new
+#old_context = getcontext().copy()
+#getcontext().prec = 50
+#print(Decimal(355) / Decimal(113))
+#setcontext(old_context)
+#
+#Better and reusable
+#with localcontext(Context(prec=50)):
+#    print(Decimal(355) / Decimal(113))
+    
+#----------------------------------- Files -----------------------------------
+
+#How to open and close files
+f = open('data.txt')
+try:
+    data = f.read()
+finally:
+    f.close()
+
+#Better
+with open('data.txt') as f:
+    data = f.read()
+print("\nData :\n", data, sep='')
+
+#----------------------------------- Locks -----------------------------------
+
+# Make a lock
+lock = threading.Lock()
+
+print("\nOld-way to use a lock :")
+lock.acquire()
+try:
+    print('Critical section 1')
+    print('Critical section 2')
+finally:
+    lock.release()
+
+#Better
+print("\nNew-way to use a lock :")
+with lock:
+    print('Critical section 1')
+    print('Critical section 2')
+    
+    
+#----------------------------------- List Comprehensions -----------------------------------    
+
+result = []
+for i in range(10):
+    s = i ** 2
+    result.append(s)
+print("\nSum of 1 to 10 squared :", sum(result))
+
+#Better
+#print([sum(i**2) for i in range(10)])
+print("Sum of 1 to 10 squared :",sum([i**2 for i in range(10)]))
+#without brackets
+print("Sum of 1 to 10 squared :",sum(i**2 for i in range(10)))
