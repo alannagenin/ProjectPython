@@ -8,8 +8,9 @@ Created on Fri Mar 20 17:25:34 2020
 
 from random import randint
 
-print("The aim of the game is too find a integer between two numbers that you choose. I will give you clues to find my number.")
-print("\n----------------- Min and max ----------------- ", end='')
+if __name__ == '__main__' :
+    print("The aim of the game is too find a integer between two numbers that you choose. I will give you clues to find my number.")
+print("\n----------------- Min and max ----------------- ")
 
 
 #-------------------------------- Min and max --------------------------------   
@@ -20,6 +21,7 @@ state = {"max": 5,
          "remaining": 5 ,
          "solution": randint(lower_boundary, upper_boundary)}
 
+#give more tries
 if upper_boundary - lower_boundary >= 1000:
     state["max"] = state["remaining"] = randint(12, 15)
 elif upper_boundary - lower_boundary >= 500:
@@ -35,7 +37,7 @@ def process(number, state):
     
     #stop the game if there's no more moves left
     if state["remaining"] == 0 and number != state["solution"]:
-        print("\nYou loose, you used your ", state["max"], " tries. \nMy number was ", state["solution"], ".", sep='')
+        print("\nYou lose, you used your ", state["max"], " tries. \nMy number was ", state["solution"], ".", sep='')
         return False
     
     #stop if number found
@@ -73,3 +75,4 @@ while True:
     else :
         #stop the game if false (no more tries or number found)
         break
+
