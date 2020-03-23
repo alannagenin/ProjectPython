@@ -5,5 +5,6 @@ The aim of this project is to code in Python 3 several games that we all know su
 Games :
 - Guessing a number between two boundaries
 - Hangman
+- Simulating gaussian curves
 
 The file `english-common-words.csv`  shows the 3000 most used words in English. We will use it to randomly choose a word.
