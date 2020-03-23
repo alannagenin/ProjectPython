@@ -5,24 +5,31 @@ Created on Sun Mar 22 20:03:13 2020
 
 @author: alanna
 """
-import csv
+
 import numpy as np
 import matplotlib.pyplot as plt
 from random import randint
 
-colors = ['#000000', '#000080', '#00008B', '#008080', '#008B8B', '#4B0082', '#5B0082',
-          '#126000', '#777777', '#123456', '#987654', '#101112']
-color_face = str(colors[randint(0, len(colors))])
-color_edge = str(colors[randint(0, len(colors))+1])
+#list of colors
+colors = ['#586BA4', '#000080', '#00008B', '#008080', '#008B8B', '#4B0082', '#5B0082',
+          '#126000', '#777777', '#123456', '#987654', '#101112', '#665687', '#190933',
+          '#5D576B', '#FE938C', '#D496A7', '#007EA7', '#003249', '#5B2A86', '#7785AC',
+          '#FF521B', '#F61067', '#6DECAF', '#3D52D5', '#247BA0', '#2A0C4E', '#F76C5E']
 
-with open('colors.csv') as csvfile:
-     colors = csv.reader(csvfile, delimiter=',')
-     colors = [','.join(color) for color in colors]
+#choose randomly two colors
+color1 = str(colors[randint(0, len(colors))])
+color2 = str(colors[randint(0, len(colors))+1])
 
 
-
+#ask how many gaussians simulate
 n = int(input("How many gaussian should we simulate? "))
 while n <= 10:
     n = int(input("Error, choose another number: "))
-x = np.random.randn(n)
-plt.hist(x, bins=randint(10, 20), facecolor=color_face, edgecolor=color_edge)
+
+#plot a first distribution
+plt.hist(np.random.randn(n), bins=randint(10, 20), facecolor=color1, edgecolor=color1)
+plt.show()
+
+#plot a second distribution
+plt.hist(np.random.randn(n), bins=randint(10, 20), facecolor=color2, edgecolor=color2)
+plt.show()
