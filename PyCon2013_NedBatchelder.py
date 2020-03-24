@@ -252,12 +252,13 @@ def range_2d(width, height):
 #        break
  
 #Low-level iteration           
-#Iterable: produces an iterator
-#Iterator: produces a stream of values
+#Iterable: produces an iterator (book)
+#Iterator: produces a stream of values (bookmark)
 
 iterator = iter(iterable)  # iterable.__iter__()
 value = next(iterator)     # iterator.next() or .__next__()
 value = next(iterator)
+#only operation that we can do on iterators is next()
 
 #with open("blah.dat") as f:
 #    # Read the first line
