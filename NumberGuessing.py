@@ -8,6 +8,7 @@ Created on Fri Mar 20 17:25:34 2020
 
 from random import randint
 
+
 #-------------------------------- Min and max ---------------------------------   
 
 def boundaries():
@@ -29,6 +30,7 @@ def create_status(lower_boundary, upper_boundary):
         state["max"] = state["remaining"] = randint(6,7)
     
     return state
+
 
 #----------------------------------- Number -----------------------------------
 
@@ -66,12 +68,12 @@ def process(number, state):
     if number < state["solution"]:
         return True
 
+
 def print_process(number, state):
     #stop the game if there's no more moves left
     if state["remaining"] == 0 and number != state["solution"]:
         print("\nYou lose, you used your ", state["max"], " tries. \nMy number was ", state["solution"], ".", sep='')
 
-    
     #stop if number found
     if number == state["solution"]:
         if state["max"] - state["remaining"] == 1 :
@@ -84,11 +86,9 @@ def print_process(number, state):
         if number > state["solution"]:
             print("Too big")
     
-        
         #too small
         if number < state["solution"]:
             print("Too small")
-
     
 
 #------------------------------------ Loop ------------------------------------    

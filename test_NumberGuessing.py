@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Mar 23 14:36:50 2020
+
+@author: alanna genin
+"""
+
 from NumberGuessing import process
 from unittest import TestCase
 
