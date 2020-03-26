@@ -7,7 +7,7 @@ Created on Fri Mar 20 19:31:50 2020
 """
 
 import csv
-from random import choice #randint
+from random import choice
 from collections import Counter
 
 #open the file with the words
@@ -18,43 +18,49 @@ with open("english-common-words.csv") as csvfile:
 
 # choose randomly a word
 def choose_word(words):
-    # word = words[randint(0, len(words))]
     word = choice(words)
     return word.upper()
 
-word = choose_word(words)
-#print(word)
 
 # print as many _ as letters in the word
 def start(word):
     """
     >>> start('hello_world')
-    None
+    _ _ _ _ _ _ _ _ _ _ _ 
     """
     underscore = ''
     for i in range(len(word)):
         underscore += '_ '
     return(underscore)
 
-# tries
+# instantiate the word, guesses and tries
+word = choose_word(words)
+# print(word)
+
 state = {
     "max": len(word) + 3,
     "remaining": len(word) + 3,
     "guesses": "",
+    "goodguesses": "",
     "failed": 0,
     "solution": word,
 }
 
-#def error(character):
-#    if not character.isalpha():
-#        print("Enter only a letter")
-#    elif len(character) > 1:
-#        print("Enter only a single letter")
-#    elif character in state["guesses"]:
-#        print('You have already guessed that letter') 
-#    return False
+#if user makes an error
+def error(character):
+    if not character.isalpha():
+        print("Enter only a letter")
+        return False
+    
+    elif len(character) > 1:
+        print("Enter only a single letter")
+        return False
+    
+    elif character in state["guesses"]:
+        print('You have already guessed that letter') 
+        return False
 
-
+#print the guesses and _ left
 def output(guessed, solution):
     """
     >>> output('des', 'descartes')
@@ -69,36 +75,52 @@ def output(guessed, solution):
             print(" _ ", end="", sep=" ")
     print()
 
+#print the letters guessed
+def fail(guessed):
+    print("Letters guessed:", end=" ")
+    for letter in guessed:
+        print(letter, sep=" ", end="-")
+    #print()
 
+#main loop
 def play(character, word):
-    #error(character)
+#    error_user = error(character)
+#    if error_user:
+#        state["remaining"] -= 1
+#    else:
+#        print('')
+    
+    #decrease the number of tries left
     state["remaining"] -= 1
+    
+    #register the guesses
     state["guesses"] += character
     
     #print the propositions
     output(state["guesses"], state["solution"])
     
     #if all the letters are in the word return False
-    if Counter(state["guesses"]) == Counter(word):
+    if Counter(state["goodguesses"]) == Counter(word):
         print("\nYou win! \nMy word was ", state["solution"],".",sep="")
         return False
-    
+        
     #stop if no more tries remaining
     if state["remaining"] <= 0:
-        print("\nYou lose, you used your ", state["max"]," tries. \nMy word was ",
-            state["solution"],".",sep="")
+        print("\nYou lose, you used your ", state["max"]," tries, you failed ",
+              state["failed"], " times.\nMy word was ", state["solution"],".",sep="")
         return False
     
     #if the character is not found return True
     if character not in word:
-        print("Wrong. You have", state["remaining"], "more guesses.")
+        print("Wrong.", end="\n\n")
         state["failed"] += 1
         return True
 
     #if the character is found return True
     elif character in word:
+        state["goodguesses"] += character
         if word.count(character) > 1:
-            state["guesses"] = word.count(character)*character
+            state["goodguesses"] += (word.count(character)-1)*character 
     return True
 
 
@@ -108,16 +130,27 @@ def play(character, word):
 
 # ----------------------------------- Loop ------------------------------------
 if __name__ == "__main__":
-    print("This game is a hangman, try to guess my word.")
+    print("This game is a hangman, try to guess my word.",
+          "The word is randomly chosen in a list of 3000 most common words in English.",
+          "To increase the difficulty only words with more than 3 letters are picked.",
+          "You will have a number of tries depending on the length of the word.")
 
     print("\n-------------- Your propositions -------------- ")
     print("\nYou have", state["remaining"], "tries to guess : ", start(word), sep=" ")
 
     while True:
+
+        #print all the guessed letters
+        if state["max"] != state["remaining"]:
+            fail(state["guesses"])
+        
+        #play
         char = str(input("Proposition : "))
         res = play(char.upper(), state["solution"])
+        
+        #continue or break the loop
         if res:
-            print("\nYou have ", state["remaining"], " tries remaining.", end="", sep="")
+            print("\nYou have ", state["remaining"], " tries remaining.", end="\n", sep="")
         else:
             # stop the game if false (no more tries or word found)
             break
