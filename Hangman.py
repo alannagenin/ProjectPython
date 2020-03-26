@@ -35,29 +35,34 @@ def start(word):
 
 # instantiate the word, guesses and tries
 word = choose_word(words)
-# print(word)
+print(word)
 
 state = {
-    "max": len(word) + 3,
-    "remaining": len(word) + 3,
+    "max": len(word) + 5,
+    "remaining": len(word) + 5,
     "guesses": "",
     "goodguesses": "",
     "failed": 0,
-    "solution": word,
+    "solution": word
 }
+
 
 #if user makes an error
 def error(character):
     if not character.isalpha():
-        print("Enter only a letter")
+        print("Enter only a letter.")
         return False
     
     elif len(character) > 1:
-        print("Enter only a single letter")
+        print("Enter only a single letter.")
         return False
     
     elif character in state["guesses"]:
-        print('You have already guessed that letter') 
+        print("You have already guessed that letter.") 
+        return False
+
+    elif character == " ":
+        print("This was a space.")
         return False
 
 #print the guesses and _ left
@@ -99,10 +104,6 @@ def play(character, word):
     #print the propositions
     output(state["guesses"], state["solution"])
     
-    #if all the letters are in the word return False
-    if Counter(state["goodguesses"]) == Counter(word):
-        print("\nYou win! \nMy word was ", state["solution"],".",sep="")
-        return False
         
     #stop if no more tries remaining
     if state["remaining"] <= 0:
@@ -112,15 +113,17 @@ def play(character, word):
     
     #if the character is not found return True
     if character not in word:
-        print("Wrong.", end="\n\n")
+        print("Wrong.", end="\n")
         state["failed"] += 1
         return True
 
-    #if the character is found return True
+    #if the character is found return True : 
     elif character in word:
-        state["goodguesses"] += character
-        if word.count(character) > 1:
-            state["goodguesses"] += (word.count(character)-1)*character 
+        state["goodguesses"] += (word.count(character))*character
+        #if all the letters are in the word return False
+        if Counter(state["goodguesses"]) == Counter(word):
+            print("\nYou win! \nMy word was ", state["solution"],".",sep="")
+            return False    
     return True
 
 
