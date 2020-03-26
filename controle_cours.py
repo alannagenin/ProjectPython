@@ -182,9 +182,9 @@ def tri_et_inverse(liste):
  #Question 8       
 def aller_a_paris(input_call=input):
     # code a remplir
-    while input_call.lower() != 'paris':
+    while input_call != 'paris':
         saisie = input_call('Question ')
-    return saisie
+    return saisie.lower()
     # quelque part dans le code de cette fonction: saisie = input_call('Question ')
     # en fonction de saisie on continue a demander ou on renvoie 'Paris'
     # Au lieu d'utiliser input comme en cours vous appelez input_call
@@ -209,11 +209,11 @@ class Pays():
 
 
 ville_pays = {
-        'Paris':'France',
-        'Berlin':'Allemagne',
-        'Madrid':'Espagne',
-        'Moscou':'Russie'
-        }
+        'Paris' : Pays('France', False),
+        'Berlin' : Pays('Allemagne', False),
+        'Madrid' : Pays('Espagne', False),
+        'Moscou' : Pays('Russie', True)
+}
 
     
 if __name__ == "__main__":
