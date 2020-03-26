@@ -22,14 +22,17 @@ color2 = str(colors[randint(0, len(colors))+1])
 
 
 #ask how many gaussians simulate
-n = int(input("How many gaussian should we simulate? "))
-while n <= 10:
-    n = int(input("Error, choose another number: "))
+def user_input():
+    n = int(input("How many gaussian should we simulate? "))
+    while n <= 10:
+        n = int(input("Error, choose another number: "))
+    return n
 
-#plot a first distribution
-plt.hist(np.random.randn(n), bins=randint(10, 20), facecolor=color1, edgecolor=color1)
-plt.show()
-
-#plot a second distribution
-plt.hist(np.random.randn(n), bins=randint(10, 20), facecolor=color2, edgecolor=color2)
-plt.show()
+def ploting(n, color):
+    plt.hist(np.random.randn(n), bins=randint(10, 20), facecolor=color, edgecolor=color)
+    plt.show()
+            
+if __name__ == "__main__":
+    n = user_input()
+    ploting(n, color1)
+    ploting(n, color2)
