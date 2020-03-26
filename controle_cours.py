@@ -162,6 +162,7 @@ class Mot():
         self.mot = mot
     
     def comptelettre(self, letter, mot):
+        self.letter = letter.lower
         for letter in mot:
             if letter.lower() in mot.lower():
                 print(self.count(letter.lower()))
@@ -191,6 +192,11 @@ ville_nom_pays = {
         'Madrid':'Espagne',
         'Moscou':'Russie'
         } 
+
+class Pays():
+    def __init__ (self, nom, visa):
+        self.nom = nom
+        self.visa = visa
 
 
 ville_pays = {
