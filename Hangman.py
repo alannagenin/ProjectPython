@@ -50,20 +50,25 @@ state = {
 #if user makes an error
 def error(character):
     if not character.isalpha():
-        print("Enter only a letter.")
-        return False
-    
+        print("Enter only a letter, no numbers.")
+        return True
+     
     elif len(character) > 1:
         print("Enter only a single letter.")
-        return False
+        return True
     
     elif character in state["guesses"]:
         print("You have already guessed that letter.") 
-        return False
-
+        return True
+    
     elif character == " ":
         print("This was a space.")
+        return True
+    
+    else:
         return False
+
+
 
 #print the guesses and _ left
 def output(guessed, solution):
@@ -80,6 +85,7 @@ def output(guessed, solution):
             print(" _ ", end="", sep=" ")
     print()
 
+
 #print the letters guessed
 def fail(guessed):
     print("Letters guessed:", end=" ")
@@ -87,13 +93,9 @@ def fail(guessed):
         print(letter, sep=" ", end="-")
     #print()
 
+
 #main loop
 def play(character, word):
-#    error_user = error(character)
-#    if error_user:
-#        state["remaining"] -= 1
-#    else:
-#        print('')
     
     #decrease the number of tries left
     state["remaining"] -= 1
@@ -149,6 +151,12 @@ if __name__ == "__main__":
         
         #play
         char = str(input("Proposition : "))
+        
+        #while error return to the begining of the loop
+        if error(char):
+            continue #ignore la suite d'une boucle             
+    
+        
         res = play(char.upper(), state["solution"])
         
         #continue or break the loop
