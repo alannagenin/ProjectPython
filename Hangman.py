@@ -10,11 +10,13 @@ import csv
 from random import choice
 from collections import Counter
 
+
 #open the file with the words
 with open("english-common-words.csv") as csvfile:
     words = csv.reader(csvfile, delimiter=",")
     words = [",".join(word) for word in words] # put words in a list
     words = [word for word in words if len(word) > 2] # select only words > 2 letters
+
 
 # choose randomly a word
 def choose_word(words):
@@ -33,9 +35,11 @@ def start(word):
         underscore += '_ '
     return(underscore)
 
+
 # instantiate the word, guesses and tries
 word = choose_word(words)
 # print(word)
+
 
 state = {
     "max": len(word) + 5,
@@ -68,7 +72,6 @@ def error(character):
     
     else:
         return False
-
 
 
 #print the guesses and _ left
