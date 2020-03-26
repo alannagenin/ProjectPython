@@ -26,7 +26,7 @@ def choose_word(words):
 def start(word):
     """
     >>> start('hello_world')
-    _ _ _ _ _ _ _ _ _ _ _ 
+    _ _ _ _ _ _ _ _ _ _ _  
     """
     underscore = ''
     for i in range(len(word)):
@@ -35,7 +35,7 @@ def start(word):
 
 # instantiate the word, guesses and tries
 word = choose_word(words)
-print(word)
+# print(word)
 
 state = {
     "max": len(word) + 5,
@@ -50,19 +50,20 @@ state = {
 #if user makes an error
 def error(character):
     if not character.isalpha():
-        print("Enter only a letter, no numbers.")
+        print("Enter only letters, no numbers.\n")
         return True
      
     elif len(character) > 1:
-        print("Enter only a single letter.")
+        print("Enter only a single letter.\n")
         return True
     
-    elif character in state["guesses"]:
-        print("You have already guessed that letter.") 
+    elif character in state["guesses"] or character in state["goodguesses"]:
+        print("You have already guessed that letter.\n") 
+        #state["goodguesses"] -= (word.count(character))*character
         return True
     
     elif character == " ":
-        print("This was a space.")
+        print("This is a space, not a letter.\n")
         return True
     
     else:
@@ -73,11 +74,10 @@ def error(character):
 #print the guesses and _ left
 def output(guessed, solution):
     """
-    >>> output('des', 'descartes')
-    des_____s
-
-    #No quotes because you print and don't return
+    >>> output('E', 'DESCARTES')
+    _ E _ _ _ _ _ E _ 
     """
+    #No quotes because you print and don't return
     for letter in solution:
         if letter in guessed:
             print(letter, end="", sep=" ")
@@ -105,28 +105,41 @@ def play(character, word):
     
     #print the propositions
     output(state["guesses"], state["solution"])
-    
-        
+       
     #stop if no more tries remaining
     if state["remaining"] <= 0:
-        print("\nYou lose, you used your ", state["max"]," tries, you failed ",
-              state["failed"], " times.\nMy word was ", state["solution"],".",sep="")
         return False
     
     #if the character is not found return True
     if character not in word:
-        print("Wrong.", end="\n")
         state["failed"] += 1
         return True
-
+    
     #if the character is found return True : 
     elif character in word:
         state["goodguesses"] += (word.count(character))*character
-        #if all the letters are in the word return False
         if Counter(state["goodguesses"]) == Counter(word):
-            print("\nYou win! \nMy word was ", state["solution"],".",sep="")
             return False    
     return True
+
+
+def print_play(character, word):
+    #stop if no more tries remaining
+    if state["remaining"] <= 0:
+        print("\nYou lose, you used your ", state["max"]," tries, you failed ",
+              state["failed"], " times.\nMy word was ", state["solution"],".",sep="")
+    
+    if state["remaining"] != 0:
+        #if the character is not found return True
+        if character not in word:
+            print("Wrong.", end="\n")
+        
+        #if the character is found return True : 
+        elif character in word:
+            #if all the letters are in the word return False
+            if Counter(state["goodguesses"]) == Counter(word):
+                print("\nYou win! \nMy word was ", state["solution"],".",sep="")
+
 
 
     
@@ -158,6 +171,7 @@ if __name__ == "__main__":
     
         
         res = play(char.upper(), state["solution"])
+        print_play(char.upper(), state["solution"])
         
         #continue or break the loop
         if res:
