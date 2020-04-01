@@ -1,6 +1,6 @@
 # Project in Python
 
-The aim of this project is to code in Python 3 several games that we all know such as hangman or guessing a number between two boundaries. To that extent, we will use dictionnaries, tests, and so on.
+The aim of this project is to code in Python 3 several games that we all know such as hangman or guessing a number between two boundaries. We aslo simulated gaussian samples. In that extent, we will use dictionnaries, tests, and so on.
 
 Games :
 - Guessing a number between two boundaries
