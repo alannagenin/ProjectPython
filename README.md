@@ -32,7 +32,7 @@ Simulate gaussian samples by asking to the user the number of samples he wants.
 
 ## Testing
 
-Finally, we did somes tests to know if our functions are well defined. To that extend, unit tests are performed using the module [unittest](https://docs.python.org/3/library/unittest.html).
+Finally, we did somes tests to know if our functions are well defined. It is important because the algorithm might fail. To that extent, unit tests are performed using the module [unittest](https://docs.python.org/3/library/unittest.html).
  
 ```python
 #importing
