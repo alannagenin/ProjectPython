@@ -11,9 +11,15 @@ The file `english-common-words.csv`  shows the 3000 most used words in English. 
 
 Files starting by `PyCon__.py` are codes coming from lectures of Python experts during the PyCon in 2013 or 2015.
 
-#Guessing numbers
+# Guessing numbers
 
-| Objectives        | 
+Steps 
+1. The computer chooses randomly a word
+2. Guess one letter
+3. Tell if True or False
+4. Loop again
+
+| Steps        | 
 | ------------- |
 | The computer chooses randomly a word      |
 | Guess one letter      | 
