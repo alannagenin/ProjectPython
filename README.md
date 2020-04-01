@@ -38,6 +38,8 @@ Finally, we did somes tests to know if our functions are well defined. To that e
 #importing
 from unittest import TestCase
 
+#code
+
 #testing
 if __name__ == "__main__":
     import doctest
