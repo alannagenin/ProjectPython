@@ -10,3 +10,16 @@ Games :
 The file `english-common-words.csv`  shows the 3000 most used words in English. We will use it to randomly choose a word.
 
 Files starting by `PyCon__.py` are codes coming from lectures of Python experts during the PyCon in 2013 or 2015.
+
+#Guessing numbers
+
+| Objectives        | 
+| ------------- |
+| The computer chooses randomly a word      |
+| Guess one letter      | 
+| Tell if True or False |
+| Loop again |
+
+#Hangman
+
+#Gaussian
