@@ -11,7 +11,16 @@ The file `english-common-words.csv`  shows the 3000 most used words in English. 
 
 Files starting by `PyCon__.py` are codes coming from lectures of Python experts during the PyCon in 2013 or 2015.
 
-# Guessing numbers
+## Guessing numbers
+
+Steps 
+1. The computer chooses randomly a number
+2. Guess one number
+3. Tell if too small or too big
+4. Loop again
+
+
+## Hangman
 
 Steps 
 1. The computer chooses randomly a word
@@ -19,13 +28,6 @@ Steps
 3. Tell if True or False
 4. Loop again
 
-| Steps        | 
-| ------------- |
-| The computer chooses randomly a word      |
-| Guess one letter      | 
-| Tell if True or False |
-| Loop again |
+## Gaussian
 
-#Hangman
-
-#Gaussian
+Simulate gaussian samples by asking to the user the number of samples he wants.
